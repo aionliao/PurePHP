@@ -8,7 +8,7 @@ return [
     'password' => '',               //数据库密码
     'charset' => 'utf8',            //数据库字符集
     'port' => 3306,                 //数据库端口
-    'prefix' => ''                  //数据表前缀
+    'prefix' => 'pure_'                  //数据表前缀
 ];
 /*
 
