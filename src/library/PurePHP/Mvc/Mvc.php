@@ -14,6 +14,14 @@ abstract class Mvc{
         $this->Cookie = new Http\Cookie;
         $this->Session = new Http\Session;
         $this->Csrf = new Http\Csrf;
+        $DI = include ROOT_PATH . '/config/dependencyInjection.php';
+        foreach($DI as $k => $v){
+            if(is_callable($v)){
+                $this->$k = $v();
+            }else{
+                $this->$k = $v;
+            }
+        }
     }
     protected function Get($key, $options = []){
         $get = new Http\Get;
