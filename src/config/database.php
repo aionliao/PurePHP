@@ -20,3 +20,4 @@ return [
     'prefix' => 'pure_'                                         //数据表前缀
 ];
 
+*/
