@@ -20,7 +20,6 @@ abstract class Controller extends Mvc{
     }
     private function tp_engine($c)
     {
-        $c = substr($c, 15);
         preg_match_all('/<!--include (.+)-->/Ui', $c, $include);
         foreach ($include[1] as $inc) {
 
@@ -31,7 +30,6 @@ abstract class Controller extends Mvc{
                 $inc_file = VIEW_PATH . $inc_array[0] . '.php';
             }
             $inc_content = file_get_contents($inc_file);
-            $inc_content = substr($inc_content, 15);
             $c = str_replace('<!--include ' . $inc . '-->', $inc_content, $c);
         }
         $c = str_replace('<?=', '<?php echo ', $c);
