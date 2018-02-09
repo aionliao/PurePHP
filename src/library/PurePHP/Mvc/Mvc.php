@@ -23,14 +23,6 @@ abstract class Mvc{
             }
         }
     }
-    protected function Get($key, $options = []){
-        $get = new Http\Get;
-        return $get->Get($key, $options);
-    }
-    protected function Post($key, $options = []){
-        $post = new Http\Post;
-        return $post->Get($key, $options);
-    }
     protected function Model($model, $module = MODULE){
         $modelFile = ROOT_PATH . '/application/' . ($module != '' ? $module . '/' : '') . 'model/' . $model . 'Model.php';
         if(!file_exists($modelFile))

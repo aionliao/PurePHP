@@ -1,14 +1,24 @@
 <?php
 namespace PurePHP\Mvc;
+use Exception;
+use PurePHP\Http;
 abstract class Controller extends Mvc{
+    protected function Get($key, $options = []){
+        $get = new Http\Get;
+        return $get->Get($key, $options);
+    }
+    protected function Post($key, $options = []){
+        $post = new Http\Post;
+        return $post->Get($key, $options);
+    }
     protected function View($data = [], $template = '', $debug = false)
     {
         if(is_array($template)){
-            $template = '../application/' . $template[0] . '/view/' . $template[1] . '.php';
+            $template = ROOT_PATH . '/application/' . $template[0] . '/view/' . $template[1] . '.php';
         }else{
             if($template == '')
                 $template = CONTROLLER . '_' . ACTION;
-            $template = '../application/' . (MODULE != '' ? MODULE . '/' : '') . 'view/' . $template . '.php';
+            $template = ROOT_PATH . '/application/' . (MODULE != '' ? MODULE . '/' : '') . 'view/' . $template . '.php';
         }
         if(file_exists($template)) {
             $contents = file_get_contents($template);
@@ -27,7 +37,7 @@ abstract class Controller extends Mvc{
             if(isset($inc_array[1])){
                 $inc_file = ROOT_PATH . '/application/' . $inc_array[1] . '/view/' . $inc_array[0] . '.php';
             }else{
-                $inc_file = VIEW_PATH . $inc_array[0] . '.php';
+                $inc_file = ROOT_PATH . '/application/' . (MODULE != '' ? MODULE . '/' : '') . '/view/' . $inc_array[0] . '.php';
             }
             $inc_content = file_get_contents($inc_file);
             $c = str_replace('<!--include ' . $inc . '-->', $inc_content, $c);

@@ -1,7 +1,7 @@
 <?php
 // Mysql 数据库
 return [
-    'database_type' => 'mysql',     //数据库类型，如果不需要使用数据库，这里留空
+    'database_type' => '',          //数据库类型，如果不需要使用数据库，这里留空，例：mysql
     'server' => '',                 //数据库服务器地址
     'database_name' => '',          //数据库名称
     'username' => '',               //数据库用户名
