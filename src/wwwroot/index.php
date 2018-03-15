@@ -1,10 +1,6 @@
 <?php
 define('ROOT_PATH', dirname(__FILE__) . '/..');
-require(ROOT_PATH . '/function/autoload.php');
-$Core = new PurePHP\Core;
-try{
-    $Core->Run();
-}catch(Exception $e){
-    if($Core->Conf['Debug'])
-        $Core->Debug($e);
-}
+require(ROOT_PATH . '/vendor/autoload.php');
+
+$core = new PurePHP\Core;
+$core->run();

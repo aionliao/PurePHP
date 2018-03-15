@@ -1,17 +1,8 @@
 <?php
-namespace PurePHP\Mvc;
-use Exception;
-use PurePHP\Http;
+namespace PurePHP\mvc;
+
 abstract class Controller extends Mvc{
-    protected function Get($key, $options = []){
-        $get = new Http\Get;
-        return $get->Get($key, $options);
-    }
-    protected function Post($key, $options = []){
-        $post = new Http\Post;
-        return $post->Get($key, $options);
-    }
-    protected function View($data = [], $template = '', $debug = false)
+    protected function view($data = [], $template = '', $debug = false)
     {
         if(is_array($template)){
             $template = ROOT_PATH . '/application/' . $template[0] . '/view/' . $template[1] . '.php';
@@ -20,12 +11,12 @@ abstract class Controller extends Mvc{
                 $template = CONTROLLER . '_' . ACTION;
             $template = ROOT_PATH . '/application/' . (MODULE != '' ? MODULE . '/' : '') . 'view/' . $template . '.php';
         }
-        if(file_exists($template)) {
+        if(file_exists($template)){
             $contents = file_get_contents($template);
             $contents = $this->tp_engine($contents);
             $this->Content($contents, $data, $debug);
-        } else {
-            throw new Exception('视图文件不存在：' . $template);
+        }else{
+            die('视图文件不存在：' . $template);
         }
     }
     private function tp_engine($c)
@@ -47,7 +38,7 @@ abstract class Controller extends Mvc{
         $c = str_replace('<?php php', '<?php', $c);
         return $c;
     }
-    protected function Content($content, $data=array(), $debug = false)
+    protected function content($content, $data=array(), $debug = false)
     {
         $file_name = md5(mb_convert_encoding(isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] :
             '', 'UTF-8', 'GBK')) . '_' . time() . rand(1000, 9999);
@@ -65,56 +56,56 @@ abstract class Controller extends Mvc{
         if(!$debug)
             unlink($runtime_file);
     }
-    protected function Success($options = []){
+    protected function success($options = []){
         $msg = isset($options['msg']) ? $options['msg'] : '';
         $url = isset($options['url']) ? $options['url'] : '';
         if(isset($options['type'])){
             $type = $options['type'];
         }else{
-            if($this->IsAjax())
+            if($this->isAjax())
                 $type = 'json';
             else
                 $type = 'html';
         }
         if($type == 'json'){
-            $this->Json([
+            $this->json([
                 'results' => 'success',
                 'msg' => $msg,
                 'url' => $url
             ]);
         }else{
             $results = 'success';
-            include '../library/PurePHP/Mvc/location.php';
+            include '../library/PurePHP/mvc/location.php';
         }
         die();
     }
-    protected function Failure($options = []){
+    protected function failure($options = []){
         $msg = isset($options['msg']) ? $options['msg'] : '';
         $url = isset($options['url']) ? $options['url'] : '';
         if(isset($options['type'])){
             $type = $options['type'];
         }else{
-            if($this->IsAjax())
+            if($this->isAjax())
                 $type = 'json';
             else
                 $type = 'html';
         }
         if($type == 'json'){
-            $this->Json([
+            $this->json([
                 'results' => 'failure',
                 'msg' => $msg,
                 'url' => $url
             ]);
         }else{
             $results = 'failure';
-            include '../library/PurePHP/Mvc/location.php';
+            include '../library/PurePHP/mvc/location.php';
         }
         die();
     }
-    protected function Json($data){
+    protected function json($data){
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
     }
-    protected function Rdirect($url){
+    protected function rdirect($url){
         header('location:' . $url);
     }
     

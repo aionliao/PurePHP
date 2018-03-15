@@ -1,8 +1,9 @@
 <?php
-namespace Application\home\Controller;
-use PurePHP\Mvc\Controller;
-class indexController extends Controller{
-    function indexAction(){       
-        $this->View();
+namespace application\home\controller;
+use PurePHP\mvc\Controller;
+
+class IndexController extends Controller{
+    function indexAction(){
+        $this->view();
     }
 }

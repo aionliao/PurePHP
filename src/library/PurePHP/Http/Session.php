@@ -1,14 +1,18 @@
 <?php
 namespace PurePHP\Http;
+
 class Session extends Http{
-    function Set($key, $val){
-        $_SESSION[$this->Conf['SessionPrefix'] . $key] = $val;
+    static function set($key, $val){
+        $conf = self::getConfig();
+        $_SESSION[$conf['SessionPrefix'] . $key] = $val;
     }
-    function Get($key, $options = []){
-        $val = isset($_SESSION[$this->Conf['SessionPrefix'] . $key]) ? $_SESSION[$this->Conf['SessionPrefix'] . $key] : null;
-        return $this->handling($val, $options);
+    static function get($key, $options = []){
+        $conf = self::getConfig();
+        $val = isset($_SESSION[$conf['SessionPrefix'] . $key]) ? $_SESSION[$conf['SessionPrefix'] . $key] : null;
+        return self::handling($val, $options);
     }
-    function Delete($key){
-        unset($_SESSION[$this->Conf['SessionPrefix'] . $key]);
+    static function delete($key){
+        $conf = self::getConfig();
+        unset($_SESSION[$conf['SessionPrefix'] . $key]);
     }
 }

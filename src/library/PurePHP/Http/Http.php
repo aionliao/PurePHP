@@ -1,11 +1,11 @@
 <?php
-namespace PurePHP\Http;
+namespace PurePHP\http;
+
 class Http{
-    protected $Conf;
-    function __construct(){
-        $this->Conf = include '../config/common.php';
+    static function getConfig(){
+        return  include '../config/common.php';
     }
-    function handling($val, $options = []){
+    static function handling($val, $options = []){
         $default = isset($options['default']) ? $options['default'] : '';
         $val = is_null($val) ? $default : $val;
         $type = isset($options['type']) ? $options['type'] : 'string';
@@ -19,6 +19,7 @@ class Http{
             case 'float':
                 $val = (float)$val;
                 break;
+                
             case 'array':
                 $val = (array)$val;
                 break;
@@ -31,12 +32,9 @@ class Http{
         $function = isset($options['function']) ? $options['function'] : [];
         $function = is_array($function) ? $function : [$function];
         $filter = isset($options['filter']) ? $options['filter'] : true;
-        if($filter && $type == 'string')
-            $function = array_merge([
-                'stripslashes',
-                'htmlspecialchars',
-                'strip_tags'
-            ], $function);
+        if($filter && $type == 'string'){
+            $function = array_merge(['htmlspecialchars'], $function);
+        }
         foreach($function as $fun){
             $fun = explode(':', $fun);
             $fun_name = $fun[0];
@@ -45,9 +43,17 @@ class Http{
                 if($parameter[$i] == '')
                     $parameter[$i] = $val;
             }
-            //var_dump($parameter);
             $val = call_user_func_array($fun_name, $parameter);
         }
         return $val;
     }
+    static function get($key, $options = []){
+        $val = isset($_GET[$key]) ? $_GET[$key] : null;
+        return self::handling($val, $options);
+    }
+    static function post($key, $options = []){
+        $val = isset($_POST[$key]) ? $_POST[$key] : null;
+        return self::handling($val, $options);
+    }
+
 }

@@ -35,7 +35,7 @@
             <a href="http://purephp.zoupeng.com/home/index/last_version" target="_blank">下载最新版本</a>
         </div>
         <div class="environment">
-            运行环境：Apache/Nginx/IIS等主流服务器，PHP 5.4+，推荐使用PHP 7+
+            运行环境：Apache/Nginx/IIS等主流服务器，PHP 7+
         </div>
         <div class="feature">
             <div class="title">为什么选择PurePHP</div>
