@@ -62,12 +62,12 @@
 		document.querySelector('.sec').innerHTML = sec;
 		sec--;
 		if (sec <= 0)
-            <?php if($url == ''){
+            <?php if ($url == '') {
 				if($results == 'success'){ ?>
 			window.location.href=document.referrer;
-				<?php }else { ?>
+				<?php } else { ?>
             window.history.go(-1);
-            <?php }}else{ ?>
+            <?php } } else { ?>
             window.location.href='<?php echo $url; ?>';
             <?php } ?>
             setTimeout('time()', 1000);

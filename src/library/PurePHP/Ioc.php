@@ -1,21 +1,41 @@
 <?php
+
 namespace PurePHP;
 
-class Ioc{
-    public static function getInstance($className){
+class Ioc
+{
+    public static function getInstance($className)
+    {
         $paramArr = self::getMethodParams($className);
         return (new \ReflectionClass($className))->newInstanceArgs($paramArr);
     }
-    public static function make($className, $methodName, $params = []){
+    public static function make($className, $methodName, $params = [])
+    {
+        $parent = $class = new \ReflectionClass($className);
+        $isController = false;
+        while ($parent = $parent->getParentClass()) {
+            if ($parent->getName() == 'PurePHP\Mvc\Controller') {
+                $isController = true;
+                break;
+            }
+        }
+        if ($isController) {
+            self::filter($class->getDocComment());
+        }
         $instance = self::getInstance($className);
+        $method = $class->getMethod($methodName);
+        if ($isController) {
+            self::filter($method->getDocComment());
+        }
         $paramArr = self::getMethodParams($className, $methodName);
         return $instance->{$methodName}(...array_merge($paramArr, $params));
     }
-    protected static function getMethodParams($className, $methodsName = '__construct'){
+    protected static function getMethodParams($className, $methodsName = '__construct')
+    {
         $class = new \ReflectionClass($className);
         $paramArr = []; 
         if ($class->hasMethod($methodsName)) {
-            $construct = $class->getMethod($methodsName);
+            $construct = $class->getMethod($methodsName);            
             $params = $construct->getParameters();
             if (count($params) > 0) {
                 foreach ($params as $key => $param) {
@@ -28,5 +48,24 @@ class Ioc{
             }
         }
         return $paramArr;
+    }
+    protected static function filter($doc)
+    {
+        if ($doc) {
+            preg_match_all('/filter\[[\S\s]+\]/U', $doc, $matches); 
+            foreach ($matches[0] as $filter) {
+                $filterClass = preg_replace('/filter\[([\S\s]+)\(([\S\s]*)\)\]/', '${1}', $filter);
+                $filterClass = '\\Filter\\' . $filterClass;
+                $filterParamArr = preg_replace('/filter\[([\S\s]+)\(([\S\s]*)\)\]/', '${2}', $filter);
+                $filterParamArr = explode(',', $filterParamArr);
+                for ($i = 0; $i < count($filterParamArr); $i++) {
+                    $filterParamArr[$i] = trim($filterParamArr[$i]);
+                }
+                $instance = self::getInstance($filterClass);
+                if (method_exists($instance, 'handle')) {
+                    $instance->handle(...$filterParamArr);
+                }
+            }
+        }
     }
 }

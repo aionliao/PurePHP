@@ -6,7 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'application\\' => array($baseDir . '/application'),
     'Medoo\\' => array($vendorDir . '/catfan/medoo/src'),
+    'Application\\' => array($baseDir . '/application'),
     '' => array($baseDir . '/library'),
 );

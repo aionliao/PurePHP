@@ -1,15 +1,19 @@
 <?php
-namespace PurePHP\http;
 
-class Http{
-    static function getConfig(){
+namespace PurePHP\Http;
+
+class Http
+{
+    public static function getConfig()
+    {
         return  include '../config/common.php';
     }
-    static function handling($val, $options = []){
+    public static function handling($val, $options = [])
+    {
         $default = isset($options['default']) ? $options['default'] : '';
         $val = is_null($val) ? $default : $val;
         $type = isset($options['type']) ? $options['type'] : 'string';
-        switch($type){
+        switch ($type) {
             case 'string':
                 $val = (string)$val;
                 break;
@@ -18,8 +22,7 @@ class Http{
                 break;
             case 'float':
                 $val = (float)$val;
-                break;
-                
+                break;                
             case 'array':
                 $val = (array)$val;
                 break;
@@ -32,10 +35,10 @@ class Http{
         $function = isset($options['function']) ? $options['function'] : [];
         $function = is_array($function) ? $function : [$function];
         $filter = isset($options['filter']) ? $options['filter'] : true;
-        if($filter && $type == 'string'){
+        if ($filter && $type == 'string') {
             $function = array_merge(['htmlspecialchars'], $function);
         }
-        foreach($function as $fun){
+        foreach ($function as $fun) {
             $fun = explode(':', $fun);
             $fun_name = $fun[0];
             $parameter = isset($fun[1]) ? explode(',', $fun[1]) : [''];
@@ -47,13 +50,4 @@ class Http{
         }
         return $val;
     }
-    static function get($key, $options = []){
-        $val = isset($_GET[$key]) ? $_GET[$key] : null;
-        return self::handling($val, $options);
-    }
-    static function post($key, $options = []){
-        $val = isset($_POST[$key]) ? $_POST[$key] : null;
-        return self::handling($val, $options);
-    }
-
 }

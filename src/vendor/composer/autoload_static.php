@@ -7,24 +7,24 @@ namespace Composer\Autoload;
 class ComposerStaticInit40c38550ecb0b597f81db8b0fdbec3d6
 {
     public static $prefixLengthsPsr4 = array (
-        'a' => 
-        array (
-            'application\\' => 12,
-        ),
         'M' => 
         array (
             'Medoo\\' => 6,
         ),
+        'A' => 
+        array (
+            'Application\\' => 12,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'application\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/application',
-        ),
         'Medoo\\' => 
         array (
             0 => __DIR__ . '/..' . '/catfan/medoo/src',
+        ),
+        'Application\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/application',
         ),
     );
 

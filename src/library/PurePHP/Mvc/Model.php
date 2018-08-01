@@ -1,5 +1,7 @@
 <?php
-namespace PurePHP\mvc;
 
-abstract class Model extends Mvc{
+namespace PurePHP\Mvc;
+
+abstract class Model extends Mvc
+{
 }
